@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class DataBaseForAddress {
 
 	private String filename;
-	private HashMap<Integer, HashMap<String, String>> map;
+	private HashMap<Integer, DTO> map;
 	public DataBaseForAddress(String filename) throws FileNotFoundException {
 		super();
 		this.filename = filename;
@@ -21,23 +21,23 @@ public class DataBaseForAddress {
 		this.map = readData();
 	}
 	
-	public HashMap<Integer, HashMap<String, String>> readData() throws FileNotFoundException {
+	public HashMap<Integer, DTO> readData() throws FileNotFoundException {
 		Scanner scanner = new Scanner(new FileReader(this.filename));
 
-		HashMap<Integer, HashMap<String, String>> map = new HashMap<Integer, HashMap<String, String>>();
+		HashMap<Integer, DTO> map = new HashMap<Integer, DTO>();
 
 		while (scanner.hasNextLine()) {
 			String[] values = scanner.nextLine().split(" ");
-			HashMap<String, String> temp = new HashMap<String, String>();
-			temp.put("name", values[1]);
-			temp.put("phone", values[2]);
-			map.put(Integer.parseInt(values[0]), temp);
+			DTO dto = new DTO();
+			dto.setName(values[1]);
+			dto.setPhone(values[2]);
+			map.put(Integer.parseInt(values[0]), dto);
 		}
 		scanner.close();
 		return map;
 	}
 
-	public HashMap<String, String> getContact(int index){
+	public DTO getContact(int index){
 		return this.map.get(index);
 	}
 	
@@ -45,10 +45,10 @@ public class DataBaseForAddress {
 		if(map.containsKey(index)){
 			System.out.println("Duplicated index");
 		} else {
-			HashMap<String, String> temp = new HashMap<String, String>();
-			temp.put("name", name);
-			temp.put("phone", phone);			
-			this.map.put(index, temp);
+			DTO dto = new DTO();
+			dto.setName(name);
+			dto.setPhone(phone);		
+			this.map.put(index, dto);
 		}
 		//saveAtNthLine(index, this.map.get(index).get("name"), this.map.get(index).get("phone"));
 		appendData(index, name, phone);
